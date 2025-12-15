@@ -516,12 +516,12 @@ Best regards,
       {/* Logo - Left */}
       <div>
         {settings.logo ? (
-          <div className="w-20 h-20 md:w-24 md:h-24 bg-white/95 backdrop-blur-md rounded-2xl shadow-2xl flex items-center justify-center p-2">
+          <div className="w-32 h-32 md:w-40 md:h-40 bg-white/95 backdrop-blur-md rounded-2xl shadow-2xl flex items-center justify-center p-3">
             <img src={settings.logo} alt="Logo" className="w-full h-full object-contain" />
           </div>
         ) : (
-          <div className="w-20 h-20 md:w-24 md:h-24 bg-white/95 backdrop-blur-md rounded-2xl shadow-2xl flex items-center justify-center">
-            <Home className="w-12 h-12 md:w-14 md:h-14 text-blue-950" />
+          <div className="w-32 h-32 md:w-40 md:h-40 bg-white/95 backdrop-blur-md rounded-2xl shadow-2xl flex items-center justify-center">
+            <Home className="w-16 h-16 md:w-20 md:h-20 text-blue-950" />
           </div>
         )}
       </div>
@@ -530,12 +530,12 @@ Best regards,
       {settings.realtorPhoto && (
         <div className="bg-white/10 backdrop-blur-md rounded-2xl p-4 md:p-6 shadow-2xl">
           <div className="flex flex-col items-center gap-2">
-            <div className="w-20 h-20 md:w-24 md:h-24 rounded-full overflow-hidden border-3 md:border-4 border-white/30 shadow-2xl bg-white">
+            <div className="w-32 h-32 md:w-40 md:h-40 rounded-full overflow-hidden border-3 md:border-4 border-white/30 shadow-2xl bg-white">
               <img src={settings.realtorPhoto} alt={settings.realtorName} className="w-full h-full object-cover" />
             </div>
             {settings.realtorName && (
               <p className="text-white text-sm md:text-base font-semibold text-center">
-                Presented by
+                Hosted by
                 <br />
                 {settings.realtorName}
               </p>
