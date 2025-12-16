@@ -266,6 +266,12 @@ For support, email kire.angjushev@veobit.com or create an issue in this reposito
 
 ---
 
+Email Functionality - Send Grid 
+
+User Name : kire@veobit.com
+Password: SendGrid12@3
+
+
 **⭐ If you find this project helpful, please give it a star!**
 
 Made with ❤️ for real estate professionals
