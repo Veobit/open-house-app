@@ -274,11 +274,41 @@ Best regards,
 
       const docRef = await addDoc(collection(db, 'guests'), newGuest);
       setGuests([...guests, { id: docRef.id, ...newGuest }]);
-      
+
+      // Send confirmation email
+      try {
+        const now = new Date();
+        const emailBody = settings.emailTemplate
+          .replace('[DATE]', now.toLocaleDateString())
+          .replace('[TIME]', now.toLocaleTimeString())
+          .replace('[ADDRESS]', settings.propertyAddress)
+          .replace('[REALTOR_NAME]', settings.realtorName);
+
+        await addDoc(collection(db, 'mail'), {
+          to: formData.email,
+          from: settings.realtorEmail || 'kire.angjushev@veobit.com',
+          replyTo: settings.realtorEmail || 'kire.angjushev@veobit.com',
+          message: {
+            subject: `Thank you for registering - ${settings.propertyAddress}`,
+            text: emailBody,
+            html: `<div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+              <h2 style="color: #1e3a8a;">Thank you for registering!</h2>
+              <p style="white-space: pre-line;">${emailBody}</p>
+              <hr style="margin: 20px 0; border: none; border-top: 1px solid #e5e7eb;">
+              <p style="color: #6b7280; font-size: 14px;">This email was sent from your Open House registration.</p>
+            </div>`
+          }
+        });
+        console.log('Email queued successfully');
+      } catch (emailError) {
+        console.error('Error sending email:', emailError);
+        // Don't fail the registration if email fails
+      }
+
       setSubmitted(true);
       setFormData({ firstName: '', lastName: '', email: '', phone: '', doNotCall: '', hasAgencyAgreement: '' });
       setBrokerInfo({ brokerName: '', companyName: '' });
-      
+
       setTimeout(() => setSubmitted(false), 5000);
     } catch (error) {
       alert('Error saving registration');
