@@ -270,6 +270,7 @@ Email Functionality - Send Grid
 
 User Name : kire@veobit.com
 Password: SendGrid12@3
+Recovery Code : QFCTYAWLHB77UZ41EU2YH2K8
 
 
 **⭐ If you find this project helpful, please give it a star!**
