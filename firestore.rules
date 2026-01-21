@@ -1,0 +1,61 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // User-specific data - each realtor has their own isolated data
+    match /users/{userId} {
+      // Properties collection - owner only for CRUD
+      match /properties/{propertyId} {
+        allow read, write: if request.auth != null && request.auth.uid == userId;
+
+        // Property settings - public read (for registration page), owner write
+        match /settings/{document=**} {
+          allow read: if true;
+          allow write: if request.auth != null && request.auth.uid == userId;
+        }
+
+        // Property guests - public create (for registration), owner read/update/delete
+        match /guests/{guestId} {
+          allow create: if true;
+          allow read, update, delete: if request.auth != null && request.auth.uid == userId;
+        }
+      }
+
+      // Legacy settings - public read (for registration page), owner write
+      // Can be removed after full migration
+      match /settings/{document=**} {
+        allow read: if true;
+        allow write: if request.auth != null && request.auth.uid == userId;
+      }
+
+      // Legacy guests - public create, owner read/update/delete
+      // Can be removed after full migration
+      match /guests/{guestId} {
+        allow create: if true;
+        allow read, update, delete: if request.auth != null && request.auth.uid == userId;
+      }
+
+      // Mail - public create (for sending confirmation emails), owner read/delete
+      match /mail/{document=**} {
+        allow create: if true;
+        allow read, delete: if request.auth != null && request.auth.uid == userId;
+      }
+    }
+
+    // Legacy global collections (can be removed after migration)
+    // Keeping temporarily for backwards compatibility
+    match /settings/{document=**} {
+      allow read: if true;
+      allow write: if request.auth != null;
+    }
+
+    match /guests/{document=**} {
+      allow create: if true;
+      allow read, update, delete: if request.auth != null;
+    }
+
+    match /mail/{document=**} {
+      allow create: if true;
+      allow read, delete: if request.auth != null;
+    }
+  }
+}
