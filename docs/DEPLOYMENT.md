@@ -13,14 +13,18 @@ This document covers all deployment configurations for the Open House Registrati
 
 The app requires these Firebase environment variables:
 
-| Variable | Value |
-|----------|-------|
-| `REACT_APP_FIREBASE_API_KEY` | `AIzaSyDaz-Cv20uB3qYVfNs6xRbLKJC8_MBqL2M` |
-| `REACT_APP_FIREBASE_AUTH_DOMAIN` | `open-house-app-51.firebaseapp.com` |
-| `REACT_APP_FIREBASE_PROJECT_ID` | `open-house-app-51` |
-| `REACT_APP_FIREBASE_STORAGE_BUCKET` | `open-house-app-51.firebasestorage.app` |
-| `REACT_APP_FIREBASE_MESSAGING_SENDER_ID` | `48385056658` |
-| `REACT_APP_FIREBASE_APP_ID` | `1:48385056658:web:c215bfcc2160274940ab4b` |
+| Variable | Where to Find |
+|----------|---------------|
+| `REACT_APP_FIREBASE_API_KEY` | Firebase Console → Project Settings → Web app |
+| `REACT_APP_FIREBASE_AUTH_DOMAIN` | `{project-id}.firebaseapp.com` |
+| `REACT_APP_FIREBASE_PROJECT_ID` | Firebase Console → Project Settings |
+| `REACT_APP_FIREBASE_STORAGE_BUCKET` | `{project-id}.firebasestorage.app` |
+| `REACT_APP_FIREBASE_MESSAGING_SENDER_ID` | Firebase Console → Project Settings |
+| `REACT_APP_FIREBASE_APP_ID` | Firebase Console → Project Settings → Web app |
+
+**Get all values from:** https://console.firebase.google.com/project/open-house-app-51/settings/general
+
+Or copy from local `.env` file (not committed to git).
 
 ### Local Development
 These are stored in `.env` file (not committed to git).
@@ -92,23 +96,21 @@ npx vercel --prod --yes --force
 # List all env vars
 npx vercel env ls
 
-# Add/Update an env var
+# Add/Update an env var (get VALUE from .env file)
 printf "VALUE" | npx vercel env add VAR_NAME production --force
-
-# Example: Update API key
-printf "AIzaSyDaz-Cv20uB3qYVfNs6xRbLKJC8_MBqL2M" | npx vercel env add REACT_APP_FIREBASE_API_KEY production --force
 ```
 
 ### Update All Vercel Environment Variables
-Run these commands to update all Firebase env vars:
+Get values from local `.env` file, then run:
 
 ```bash
-printf "AIzaSyDaz-Cv20uB3qYVfNs6xRbLKJC8_MBqL2M" | npx vercel env add REACT_APP_FIREBASE_API_KEY production --force
-printf "open-house-app-51.firebaseapp.com" | npx vercel env add REACT_APP_FIREBASE_AUTH_DOMAIN production --force
-printf "open-house-app-51" | npx vercel env add REACT_APP_FIREBASE_PROJECT_ID production --force
-printf "open-house-app-51.firebasestorage.app" | npx vercel env add REACT_APP_FIREBASE_STORAGE_BUCKET production --force
-printf "48385056658" | npx vercel env add REACT_APP_FIREBASE_MESSAGING_SENDER_ID production --force
-printf "1:48385056658:web:c215bfcc2160274940ab4b" | npx vercel env add REACT_APP_FIREBASE_APP_ID production --force
+# Copy values from .env file for each variable
+printf "<API_KEY_FROM_ENV>" | npx vercel env add REACT_APP_FIREBASE_API_KEY production --force
+printf "<AUTH_DOMAIN_FROM_ENV>" | npx vercel env add REACT_APP_FIREBASE_AUTH_DOMAIN production --force
+printf "<PROJECT_ID_FROM_ENV>" | npx vercel env add REACT_APP_FIREBASE_PROJECT_ID production --force
+printf "<STORAGE_BUCKET_FROM_ENV>" | npx vercel env add REACT_APP_FIREBASE_STORAGE_BUCKET production --force
+printf "<MESSAGING_SENDER_ID_FROM_ENV>" | npx vercel env add REACT_APP_FIREBASE_MESSAGING_SENDER_ID production --force
+printf "<APP_ID_FROM_ENV>" | npx vercel env add REACT_APP_FIREBASE_APP_ID production --force
 ```
 
 Then redeploy:
@@ -248,3 +250,14 @@ curl -s "https://api.github.com/repos/Veobit/open-house-app/actions/runs?per_pag
 - **Firebase Console**: https://console.firebase.google.com/project/open-house-app-51
 - **Vercel Dashboard**: https://vercel.com/veobits-projects/veobit-openhouse
 - **Google Cloud Console**: https://console.cloud.google.com/apis/credentials?project=open-house-app-51
+
+---
+
+## Security Note
+
+Firebase API keys are designed to be public (embedded in client-side JavaScript). Security is enforced via:
+1. **Firestore Security Rules** - Control data access
+2. **API Key Restrictions** - Limit which APIs the key can call
+3. **Authorized Domains** - Restrict which domains can use Firebase Auth
+
+Never commit sensitive secrets like service account keys or database passwords to the repository.
